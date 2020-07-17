@@ -1,0 +1,13 @@
+@startuml
+
+ContextImpl -> ActivityThread:getHandler();
+ContextImpl -> LoadedApk:getReceiverDispatcher
+LoadedApk -> LoadedApk: new InnerReceiver(this, !registered);
+ContextImpl -> ActivityManagerProxy:registerReceiver
+
+
+
+
+
+
+@enduml

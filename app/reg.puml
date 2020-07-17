@@ -1,0 +1,21 @@
+@startuml
+ContextImpl -> LoadedApk.ReceiverDispatch: get
+LoadedApk.ReceiverDispatch -> InnerReceiver.Stub:new
+ContextImpl -> AMS:reg(ActivityThread,InnerReceiver)
+AMS -> AMS : new ReceiverList (InnerReceiver.Stub)
+AMS -> BroadcastRecord : new
+AMS -> BroadcastQueue:enqueueParallelBroadcastLocked(BroadcastRecord)
+AMS -> BroadcastQueue:scheduleBroadcastsLocked()
+BroadcastQueue -> AMS.mHandler:sendMessage
+AMS -> BroadcastQueue:processNextBroadcast
+BroadcastQueue -> BroadcastQueue:deliverToRegisteredReceiverLocked
+BroadcastQueue -> BroadcastQueue : performReceiveLocked
+BroadcastQueue -> ActivityThread:scheduleRegisteredReceiver
+ActivityThread -> InnerReceiver:performReceive
+InnerReceiver -> ReceiverDispatch:performReceive
+ReceiverDispatch -> ActivityThread: mHandler.post -> Args.run() receiver.onreceive
+
+
+
+
+@enduml
